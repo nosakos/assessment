@@ -14,3 +14,9 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+
+$(function(){
+	$('form').on('ajax:success', function(event, data, status, xhr){
+		$('#response').append('<p>' + ((data.input=='invalid') ? data.response : (data.input + ' = ' + data.response)) + '</p>');
+	});
+});

@@ -9,7 +9,7 @@ class NumeralsController < ApplicationController
 	end
 
 	def numerals
-		render plain: ((is_number?(params[:number])) ? to_string(params[:number].to_i) : "Please enter the number in the text box!")
+		render json: ((is_number?(params[:number])) ? to_string(params[:number].to_i) : { "input" => "invalid", "response" => "Please enter the number in the text box!" })
 	end
 
 	private
@@ -19,7 +19,7 @@ class NumeralsController < ApplicationController
 
   		def to_string number
   			if number == 0
-  				return @@small_numbers[0]
+  				return { "input" => 0, "response" => @@small_numbers[0] }
   			end
 
   			digits = Array[0, 0, 0, 0]
@@ -40,7 +40,6 @@ class NumeralsController < ApplicationController
                 group_string[i] = group_to_string(digits[i])
                 i += 1
             end
-            puts group_string
 
             combined = group_string[0];
             
@@ -62,7 +61,7 @@ class NumeralsController < ApplicationController
                 i += 1
             end
 
-            return combined
+            return { "input" => number, "response" => combined }
   		end
 
   		def group_to_string group
@@ -85,7 +84,7 @@ class NumeralsController < ApplicationController
             if tens >= 2
                 group_string += @@tens[tens];
                 if units != 0
-                    group_string += " " + @@small_numbers[units];
+                    group_string += "-" + @@small_numbers[units];
                 end
             elsif tens_units != 0
                 group_string += @@small_numbers[tens_units];
